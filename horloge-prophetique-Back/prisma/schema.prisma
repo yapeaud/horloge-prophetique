@@ -1,0 +1,144 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum Plateforme {
+  SPOTIFY
+  APPLE
+  AMAZON
+  INTERNE
+}
+
+enum StatutPriere {
+  EN_ATTENTE
+  TRAITE
+  ARCHIVE
+}
+
+enum TypeSujet {
+  HEBDOMADAIRE
+  MENSUEL
+  CONTINENTAL
+}
+
+enum MoyenPaiement {
+  STRIPE
+  PAYPAL
+  MOBILE_MONEY
+}
+
+enum StatutDon {
+  EN_ATTENTE
+  COMPLETE
+  ECHOUE
+}
+
+model User {
+  id        Int   @id @default(autoincrement())
+  userId    String @unique @default(uuid())
+  nom       String
+  email     String   @unique
+  password  String
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Podcast {
+  id          Int     @id @default(autoincrement())
+  podcastId   String  @unique @default(uuid())
+  titre       String
+  description String
+  image       String?
+  urlAudio    String
+  plateforme  Plateforme @default(INTERNE)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model PrayerRequest {
+  id        Int   @id @default(autoincrement())
+  prayerRequestId String @unique @default(uuid())
+  nom       String
+  email     String
+  sujet     String
+  statut    StatutPriere @default(EN_ATTENTE)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+}
+
+model PrayerTopic {
+  id        Int     @id @default(autoincrement())
+  prayerTopicId String @unique @default(uuid())
+  titre     String
+  contenu   String
+  image     String?
+  type      TypeSujet  @default(MENSUEL)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model NewsletterSubscriber {
+  id        Int   @id @default(autoincrement())
+  subscriberId String @unique @default(uuid())
+  prenom    String
+  email     String   @unique
+  createdAt DateTime @default(now())
+}
+
+model Book {
+  id          Int     @id @default(autoincrement())
+  bookId      String  @unique @default(uuid())
+  titre       String
+  description String
+  fichier     String?
+  image       String?
+  categorie   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Donation {
+  id            Int     @id @default(autoincrement())
+  donationId    String  @unique @default(uuid())
+  montant       Float
+  moyenPaiement MoyenPaiement @default(STRIPE)
+  statut        StatutDon     @default(EN_ATTENTE)
+  donorEmail    String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model TeamMember {
+  id          Int      @id @default(autoincrement())
+  memberId    String   @unique @default(uuid())
+  nom         String
+  poste       String
+  description String?
+  photo       String?  // chemin relatif du fichier uploadé (ex: /uploads/team/...)
+  ordre       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Media {
+  id          Int      @id @default(autoincrement())
+  mediaId     String   @unique @default(uuid())
+  titre       String
+  tag         String
+  description String
+  objectif    String
+  icone       String   @default("Tv") // nom de l'icône lucide-react (Tv, Radio, Mic…)
+  ordre       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
