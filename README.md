@@ -112,7 +112,7 @@ cp .env.example .env
 Dans `.env`, indiquez l'URL de l'API :
 
 ```env
-VITE_API_URL=http://localhost:5001/api
+VITE_API_URL=http://localhost:5001
 ```
 
 Puis lancez le site :

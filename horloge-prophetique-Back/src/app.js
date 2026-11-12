@@ -31,7 +31,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 // Toutes les routes de l'API sont préfixées par /api
-app.use('/api', router)
+app.use('/', router)
 
 // Gestionnaire d'erreurs global — doit être déclaré en DERNIER pour intercepter
 // les erreurs transmises via next(err) depuis les controllers
